@@ -1,0 +1,11 @@
+node_modules/
+cypress/videos/
+cypress/screenshots/
+cypress/reports/
+mochawesome-report/
+.DS_Store
+.vscode/
+.env
+.env.local
+node_modules
+cypress/results
