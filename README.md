@@ -153,10 +153,15 @@ C:\Users\Vinicius\desafio1-cypress\cypress\e2e\testEslint.cy.js
 4- Com o auxílio do ChatGpt encontrei uma alternativa para rodar as etapas de montagem do relatório CONSOLIDADO no mochawesome utilizando um arquivo com extensão .js (“generate-report.js”) onde pude colocar toda a lógica de montagem do relatório consolidado. Este arquivo foi salvo na raiz do projeto e é executado através do comando node: "node generateReport.js". Ele realiza as etapas:
 
 ✅ Rodando testes...
+
 ✅ Gerando arquivo report.json...
+
 📄 Gerando relatório HTML...
+
 ⚠️ Erro ao remover report.json:', err.message);
+
 🎉 Relatório gerado corretamente em: cypress/results/report.html'
+
 
 5- Vantagens de utilizar .js ao invés de .sh:
 Você quer manter uma base padronizada em JavaScript
