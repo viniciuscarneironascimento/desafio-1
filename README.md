@@ -39,72 +39,22 @@ Implementei testes diretamente na API utilizando o Cypress para validar os endpo
 
 ---
 
-1. Fork do Servidor de API no GitHub
-Acessei o repositório original: https://github.com/jvitor-gomes/cms-for-qas-api e entrei na minha conta do GitHub.
-
-Cliquei em Fork e um novo repositório foi criado na minha conta: cms-for-qas-api.
-
-Clonei o repositório na minha máquina local:
-
-Escolhi a opção de clonagem via HTTPS no GitHub;
-
-Abri um novo terminal Bash no VS Code;
-
-Executei o comando:
-
-bash
-Copiar
-Editar
-git clone https://github.com/viniciuscarneironascimento/cms-for-qas-api.git
-Listei as pastas com ls, acessei o repositório com cd cms-for-qas-api e abri o projeto no VS Code com:
-
-bash
-Copiar
-Editar
-code .
-Tentei iniciar o servidor com o comando:
-
-bash
-Copiar
-Editar
-npm run dev
-Porém, ocorreu um erro.
-
-Consultei o arquivo README.md do repositório e identifiquei que era necessário instalar as dependências locais. Executei:
-
-bash
-Copiar
-Editar
-npm install
-Instalação realizada com sucesso.
-
-Após isso, executei novamente:
-
-bash
-Copiar
-Editar
-npm run dev
-O servidor foi iniciado com sucesso e a documentação Swagger ficou disponível em: http://localhost:3000/api-docs/
-
-Extra: abri um novo terminal para verificar se o projeto estava vinculado ao repositório remoto no GitHub com o comando:
-
-bash
-Copiar
-Editar
-git remote -v
-O retorno foi:
-
-perl
-Copiar
-Editar
-origin  https://github.com/viniciuscarneironascimento/cms-for-qas-api.git (push)
-Leitura e Exploração do Swagger:
-
-Tentei executar o endpoint de Autenticação POST /auth/login com os dados de exemplo fornecidos na documentação, mas recebi o erro: "email ou senha inválidos". Esse endpoint autentica um usuário e retorna um token JWT.
-
-Para resolver, criei um novo usuário utilizando o endpoint POST /usuários (que não requer autenticação), com os dados de exemplo (nome, email e senha: "Senha123"). A criação foi bem-sucedida (status 201) e copiei o id retornado.
-
-Em seguida, voltei ao endpoint POST /auth/login, forneci os dados do novo usuário no corpo da requisição e obtive com sucesso o token JWT.
+# Fork do servidor de API no GitHub
+1- Acessei o repositório https://github.com/jvitor-gomes/cms-for-qas-api e loguei na minha conta do GitHub
+2- Cliquei em fork e um novo repositório foi criado na minha conta: cms-for-qas-api (https://github.com/viniciuscarneironascimento/cms-for-qas-api)
+3- Clonar na minha máquina local
+- Escolhi a opção clinar via HTTPS no GitHub
+- Abri um novo terminal bash no VS Code
+- Executei o comando git clone https://github.com/viniciuscarneironascimento/cms-for-qas-api.git
+- Procurei pela pasta do repositório local (ls) e acessei: cd cms-for-qas-api e abri a pasta no VS Code (comando “code .”)
+4- Tentei iniciar o servidor com o comando “npm run dev” mas deu erro 
+- Consultei a documentação (Readme.md) do repositório e verifiquei que era necessário instalar as dependências local com o comando “npm install”. Instalação realizada com sucesso.
+- Tentei iniciar o servidor novamente com o comando “npm run dev”. Servidor iniciado com sucesso http://localhost:3000/api-docs/   (Swagger).
+5- Extra: abri novo terminal para consultar se o projeto estava associado ao servidor remoto no GitHub através do comando “git remote -v”. Obtive retorno “origin  https://github.com/viniciuscarneironascimento/cms-for-qas-api.git (push)”
+6- Leitura e entendimento do Swagger
+- Tentei executar o endpoint “Autenticação” POST /auth/login com os dados de exemplo da documentação e retornou “erro: email ou senha inválidos”. Este endpoint Autentica um usuário e retorna um token JWT.
+- Precisava criar um novo usuário. Executei o endpoint POST /usuários (não requer autenticação) para criar um novo usuário e utilizar no passo anterior. Utilizei os dados de exemplo da documentação (nome, email e senha “Senha123”). Então o novo usuário foi criado com sucesso (status 201). Copiei o “id”.
+- Retornei para o endpoint de “Autenticação” POST /auth/login, forneci os dados no request body (email e senha) e então foi gerado um token JWT.
 
 Response body
 {
@@ -117,90 +67,51 @@ Response body
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU1ZmZkZTQ2LTE3MmQtNDU4Zi1hY2ZiLWU1NDBhMmU4YzdjOSIsImlhdCI6MTc0NjYzNjM4NCwiZXhwIjoxNzQ2NzIyNzg0fQ.z38imJEZQym12BLKETJKyqoBdna83DcxEIk7S_nUAmc"
 }
 
+- Tentei executar o endpoint de consulta de usuário para validar a criação do novo usuário através de GET /usuários/{id}, informei o id, porém retornou status 401 (não autorizado) e a mensagem de erro “token não fornecido”.
+- Então percebi que a autorização é concedida ao clicar no botão localizado no canto superior direito “Autorize” onde informei no campo “value” o token JWT. Desta forma todos os endpoints que requerem autenticação passaram a funcionar.
+- OBS: o endpoint “Autenticação” não requer token, porém precisa ter um usuário cadastrado. O endpoint de busca de usuário (GET) precisa de token. Por fim, o endpoint para criar um novo usuário (POS /usuário) cria um novo usuário no sistema (não requer autenticação).
 
-Tentei executar o endpoint de consulta de usuário GET /usuários/{id} para validar a criação do novo usuário. Informei o ID corretamente, mas recebi o status 401 (Não autorizado) com a mensagem de erro: "token não fornecido".
+---
 
-Percebi então que a autenticação é necessária. No Swagger, cliquei no botão "Authorize" no canto superior direito e informei o token JWT no campo "value". Após isso, todos os endpoints que exigem autenticação passaram a funcionar corretamente.
+# Testar pelo Postman
+1- Realizei login no Postman (www.postman.com) e criei uma nova collection em meu workspace com nome DESAFIO1.
 
-Observações:
+2- Copiei o CURL de um endpoint (Autenticação), importei no Postman e ao executar recebi a mensagem de erro “Ao testar uma API localmente, você precisa usar o Agente Postman Desktop. No momento, você tem um Agente diferente selecionado, que não pode enviar solicitações ao Localhost .”
 
-O endpoint de Autenticação (POST /auth/login) não requer token, mas exige que o usuário já esteja cadastrado.
+3- Então fiz o download do “Desktop Agent” para tentar executar solicitação local (localhost). Após instalação, o ícone do postman fica habilitado no canto inferir direito junto com outros aplicativos do sistema.
 
-O endpoint de consulta de usuário (GET /usuários/{id}) requer token para ser acessado.
+4- Ao refazer a requisição funcionou conforme esperado.
 
-O endpoint de criação de usuário (POST /usuários) não exige autenticação, ou seja, pode ser utilizado livremente para cadastrar novos usuários no sistema.
+---
 
+# Criar automação Cypress (desafio.cy.js)
+1- Antes de cria o projeto Cypress, pesquisei se era possível acessar uma aplicação rodando em um servidor local (localhost)  desde que o servidor seja iniciado na máquina local
 
+2- Criei uma pasta e executei o comando npm init -y para inicializar um projeto node.js
 
+3- Instalei o cypress npm install cypress –save-dev
 
-2. Testar pelo Postman
-Acessei o Postman (www.postman.com), fiz login e criei uma nova Collection no meu workspace com o nome DESAFIO1.
+4- Abri o projeto no VSCode com code .
 
-Copiei o cURL de um endpoint (Autenticação), importei no Postman e, ao executar, recebi a seguinte mensagem de erro:
+5- Executei o cypress pela primeira vez (npx cypress open) onde foram criadas as pastas do cypress junto ao node.
 
-"Ao testar uma API localmente, você precisa usar o Agente Postman Desktop. No momento, você tem um agente diferente selecionado, que não pode enviar solicitações ao localhost."
+6- Criei um arquivo básico para criar os casos de teste (desafio.cy.js).
 
-Para resolver, fiz o download do Postman Desktop Agent. Após a instalação, o ícone do Postman passou a ser exibido na área de notificação (canto inferior direito da tela, junto aos demais aplicativos do sistema).
+7- Criei o arquivo gitignore para evitar que arquivos desnecessários sejam commitados.
 
-Reexecutei a requisição e ela funcionou corretamente.
+8- Validação básica do site localhost com sucesso.
 
-3. Criar automação Cypress (desafio.cy.js)
-Antes de iniciar o projeto Cypress, pesquisei se era possível acessar uma aplicação rodando em servidor local (localhost) — desde que o servidor estivesse ativo na máquina.
+9- Erros referentes a variável não utilizada, espaços desnecessários ou falta de ponto e vírgula para encerrar um trecho do código serão exibidos na aba "PROBLEMS" ao lado de TERMINAL.
 
-Criei uma pasta para o projeto e inicializei o Node.js com:
+---
 
-bash
-Copiar
-Editar
-npm init -y
-Instalei o Cypress como dependência de desenvolvimento:
+# Criar testes estáticos ESLint  (testeEslint.cy.js)
+1- Instalação do ESLint (npm install --save-dev eslint).
 
-bash
-Copiar
-Editar
-npm install cypress --save-dev
-Abri o projeto no VS Code com:
+2- Com o auxílio do ChatGpt configurei o arquivo eslintrc.js e todos os ajustes necessários para validar erros estáticos como: variáveis =nunca usadas, falta de ponto e vírgula, endentação etc. Esta etapa foi a mais demorada devido a vários erros.
 
-bash
-Copiar
-Editar
-code .
-Executei o Cypress pela primeira vez com:
+3- Realizei validações com ESLint com o comando “npx eslint cypress/e2e --ext .js” no terminal ou “npm run eslint”. Este comando executa o “eslint” para validar erros no código e exibe no terminal. Neste comando não é executado o cypress. Veja exemplo abaixo.
 
-bash
-Copiar
-Editar
-npx cypress open
-Isso gerou a estrutura de pastas padrão (cypress/, node_modules/, etc.).
-
-Criei um arquivo de teste chamado desafio.cy.js para desenvolver os cenários de teste.
-
-Criei um arquivo .gitignore para evitar o versionamento de arquivos desnecessários.
-
-Realizei uma validação básica no site local (localhost) com sucesso.
-
-Problemas como variáveis não utilizadas, espaços em excesso ou ausência de ponto e vírgula são exibidos na aba PROBLEMS, ao lado da aba TERMINAL no VS Code.
-
-
-
-4. Criar testes estáticos com ESLint (testeEslint.cy.js)
-Instalei o ESLint com o seguinte comando:
-
-bash
-Copiar
-Editar
-npm install --save-dev eslint
-Com o auxílio do ChatGPT, configurei o arquivo eslintrc.js e realizei todos os ajustes necessários para validar erros estáticos, como:
-
-Variáveis nunca utilizadas
-
-Falta de ponto e vírgula
-
-Problemas de indentação, entre outros
-
-Esta etapa foi a mais trabalhosa, pois diversos erros foram identificados e precisaram ser corrigidos.
-
-Executei as validações com ESLint usando o seguinte comando no terminal:
 Ex passo 3
 C:\Users\Vinicius\desafio1-cypress\cypress\e2e\testEslint.cy.js
   4:1  error  Expected indentation of 2 spaces but found 6  indent
@@ -215,96 +126,48 @@ C:\Users\Vinicius\desafio1-cypress\cypress\e2e\testEslint.cy.js
 
 4- Já o comando “"eslint:cypress2": "eslint && test"” ou “npm run eslint:cypress2” executa o “eslint” antes de executar o cypress. Havendo erro, o cypress nem chega a ser executado obrigando o desenvolvedor a corrigir os erros no código. Erros capturados pelo ESLint também serão exibidos na aba "PROBLEMS" ao lado de TERMINAL.
 
+---
 
+# Criar testes snapshot (comparaTela.cy.js)
+1- Foi criado arquivo comparaTela.cy.js para implementar estes testes.
 
+2- Utilizei Cypress Image Snapshot, que é uma integração do Cypress para capturar snapshots e compará-los com imagens de referência para garantir que não haja regressões visuais.
 
+3- Instalando a dependência: npm install --save-dev cypress-image-snapshot
 
+4- Se houver erro, o resultado será exibido na pasta snapshots/__diff_outpit. Haverá um arquivo PNG com print das duas telas com destaque para o ponto diferente entre elas.
 
+5- Ao executar o comando "test:update-snapshots": "cypress run --spec cypress/e2e/comparaTela.cy.js --env updateSnapshots=true", a imagem de referência é atualizada e executado a validação apenas dos testes do arquivo “comparaTela.cy.js” em modo hedless. Neste exemplo sempre irá passar pois a tela será comparada com uma imagem que acabou de ser capturada. O ideal é usar “cypress run --spec cypress/e2e/comparaTela.cy.js” pois irá validar mudanças posteriores no layout.
 
-5. Criar testes de snapshot (comparaTela.cy.js)
-Criei o arquivo comparaTela.cy.js para implementar os testes de snapshot.
+6- Testes realizados com sucesso.
 
-Utilizei a biblioteca Cypress Image Snapshot, uma integração com o Cypress que permite capturar imagens da interface e compará-las com imagens de referência, garantindo que não haja regressões visuais.
+---
 
-Instalei a dependência com o comando:
+# Teste report mochawesome
+1- Tive que instalar modo “forçado” pois havia conflito com a biblioteca do snapshot: --legacy-peer-deps.
 
-bash
-Copiar
-Editar
-npm install --save-dev cypress-image-snapshot
-Quando há diferenças entre as imagens, o resultado é exibido na pasta snapshots/__diff_output. Nela é gerado um arquivo .png com o print das duas telas, destacando visualmente os pontos divergentes.
+2- Etapa bastante desafiadora deste projeto pois os comandos para mergear e gerar um relatório html consolidado não estava funcionando.
 
-Para atualizar a imagem de referência e executar apenas os testes do arquivo comparaTela.cy.js em modo headless, utilizei o comando:
+3- Desisti de utilizar o mochawesome devido aos conflitos de versões e dependências com outras bibliotecas e optei pelo Allure Report. Porém, devido dependência do java voltei atrás.
 
-bash
-Copiar
-Editar
-npm run test:update-snapshots
-Esse script está configurado como:
+4- Com o auxílio do ChatGpt encontrei uma alternativa para rodar as etapas de montagem do relatório CONSOLIDADO no mochawesome utilizando um arquivo com extensão .js (“generate-report.js”) onde pude colocar toda a lógica de montagem do relatório consolidado. Este arquivo foi salvo na raiz do projeto e é executado através do comando node: "node generateReport.js". Ele realiza as etapas:
 
-json
-Copiar
-Editar
-"test:update-snapshots": "cypress run --spec cypress/e2e/comparaTela.cy.js --env updateSnapshots=true"
-Neste modo, o teste sempre passará, pois a imagem será comparada com uma referência recém-gerada. O ideal é usar:
-
-bash
-Copiar
-Editar
-cypress run --spec cypress/e2e/comparaTela.cy.js
-para validar se houve mudanças posteriores no layout.
-
-Os testes foram realizados com sucesso.
-
-6. Gerar relatório de testes com Mochawesome
-Precisei instalar o Mochawesome com a opção --legacy-peer-deps, devido a conflitos com a biblioteca de snapshot:
-
-bash
-Copiar
-Editar
-npm install --save-dev mochawesome mochawesome-merge mochawesome-report-generator --legacy-peer-deps
-Essa etapa foi uma das mais desafiadoras do projeto, pois os comandos para unificar os arquivos JSON e gerar um relatório HTML consolidado inicialmente não funcionaram como esperado.
-
-Tentei utilizar o Allure Report, mas desisti temporariamente por conta da dependência do Java.
-
-Com auxílio do ChatGPT, criei uma alternativa viável com um arquivo JavaScript (generateReport.js) para automatizar o processo de montagem do relatório consolidado. Esse arquivo foi salvo na raiz do projeto e é executado com:
-
-bash
-Copiar
-Editar
-node generateReport.js
-O script realiza as seguintes etapas:
-
-swift
-Copiar
-Editar
 ✅ Rodando testes...
 ✅ Gerando arquivo report.json...
 📄 Gerando relatório HTML...
-⚠️ Erro ao remover report.json:', err.message
-🎉 Relatório gerado corretamente em: cypress/results/report.html
-Vantagens de utilizar .js ao invés de .sh:
+⚠️ Erro ao remover report.json:', err.message);
+🎉 Relatório gerado corretamente em: cypress/results/report.html'
 
-Permite manter toda a base em JavaScript
+5- Vantagens de utilizar .js ao invés de .sh:
+Você quer manter uma base padronizada em JavaScript
+Pretende rodar o mesmo comando localmente, em Windows, ou numa CI/CD
 
-Pode ser executado em diferentes ambientes (Windows, Linux ou CI/CD) com maior compatibilidade
+---
 
-7. Criar testes de API (testeApi.cy.js)
-Desenvolvi diversos cenários de testes de API no arquivo testeApi.cy.js.
+# Criar testes de API  (testeApi.cy.js)
+1- Criação de vários cenários de teste de API.
 
-Utilizei payloads dinâmicos com a biblioteca faker, além de ganchos como before para configurar pré-condições dos testes.
+2- Criação de payload dinêmico com faker, uso de ganchos (before)
 
-Realizei validações de:
-
-Requisições POST e GET
-
-Autenticação via token
-
-Simulação de erros com intercept (mock)
-
-Validações de respostas no response body
-
-Criação de novos registros, entre outros
-
-
+3- Validações de requests do tipo POST, GET, autenticação, simulação de erros com mock (intercept), validação de cenários de erro no response body, criação de novos registros etc.
 
