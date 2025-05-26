@@ -3,6 +3,9 @@ const { addMatchImageSnapshotPlugin } = require('cypress-image-snapshot/plugin')
 
 module.exports = defineConfig({
   e2e: {
+    env: {
+      baseUrlApi: 'https://serverest.dev'
+    },
     baseUrl: 'http://localhost:3000', // Aqui está a baseUrl
     setupNodeEvents(on, config) {
       // Configura o plugin de snapshot
