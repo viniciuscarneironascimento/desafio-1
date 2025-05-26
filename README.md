@@ -28,6 +28,7 @@ Configurei o reporter **Mochawesome** para geração de relatórios detalhados e
 Implementei testes diretamente na API utilizando o Cypress para validar os endpoints, métodos HTTP, status de resposta e estrutura dos dados retornados.
 
 ### 8. CRUD para API
+Criei um fluxo para validar o CRUD de um endpoint usando estratégias para centralizar e reaproveitar o código em cypress/supports.
 
 ---
 
