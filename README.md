@@ -27,6 +27,9 @@ Configurei o reporter **Mochawesome** para geração de relatórios detalhados e
 ### 7. 🌐 Testes de API
 Implementei testes diretamente na API utilizando o Cypress para validar os endpoints, métodos HTTP, status de resposta e estrutura dos dados retornados.
 
+### 8. CRUD para API
+Criei um fluxo para validar o CRUD de um endpoint usando estratégias para centralizar e reaproveitar o código em cypress/supports.
+
 ---
 
 ## 🚀 Tecnologias Utilizadas
@@ -175,4 +178,14 @@ Pretende rodar o mesmo comando localmente, em Windows, ou numa CI/CD
 2- Criação de payload dinêmico com faker, uso de ganchos (before)
 
 3- Validações de requests do tipo POST, GET, autenticação, simulação de erros com mock (intercept), validação de cenários de erro no response body, criação de novos registros etc.
+
+---
+
+# CRUD para API
+
+1- Avaliei os pontos positivos e negativos para centralizar e facilitar o uso de um CRUD de API no Cypress. Avaliei a criação de funções reutilizáveis dentro do arquivo “commands.js”, em um arquivo separado dentro da pasta support como por exemplo cypress/support/api.js. Por fim, comparei com o Padrão PageObject.
+
+2- Considerando uma estrutura mais limpa e reaproveitável, um projeto grande, melhor organização, evitar deixar tudo junto no commands.js, facilidade de manutenção, então escolhi criar arquivos por grupo de endpoints: EX cypress/support/usuario.js
+
+3- Teste finalizado com sucesso com acriação de fluxo completo de CRUD em um mesmo caso de teste (it).
 
